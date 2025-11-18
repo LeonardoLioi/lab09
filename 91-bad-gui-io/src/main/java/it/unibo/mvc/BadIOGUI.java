@@ -1,5 +1,7 @@
 package it.unibo.mvc;
 
+
+import javax.print.DocFlavor.READER;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,10 +15,20 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.WatchEvent.Kind;
+import java.nio.file.WatchEvent.Modifier;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.List;
 import java.util.Random;
+
 
 /**
  * This class is a simple application that writes a random number on a file.
@@ -28,13 +40,17 @@ import java.util.Random;
  */
 public class BadIOGUI {
 
+
     private static final String TITLE = "A very simple GUI application";
     private static final String PATH = System.getProperty("user.home")
             + File.separator
+            +"Desktop"
+            +File.separator
             + BadIOGUI.class.getSimpleName() + ".txt";
     private static final int PROPORTION = 5;
     private final Random randomGenerator = new Random();
     private final JFrame frame = new JFrame(TITLE);
+
 
     /**
      * Creates a new BadIOGUI.
@@ -67,7 +83,51 @@ public class BadIOGUI {
                 }
             }
         });
+
+
+        JPanel jp = new JPanel();
+        jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
+        frame.getContentPane().add(jp);
+        JButton b1 = new JButton("write");
+        jp.add(b1);
+        b1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                 try (PrintStream ps = new PrintStream(PATH, StandardCharsets.UTF_8)) {
+                     System.out.println("tasto Write premuto!");
+                    ps.print("Testo scritto grazie al pulsante write");
+                   
+                } catch (final IOException f) {
+                    JOptionPane.showMessageDialog(frame, e, "Error", JOptionPane.ERROR_MESSAGE);
+                    f.printStackTrace(); // NOPMD: allowed as this is just an exercise
+                }
+               
+            }
+        });
+        JButton b2 = new JButton("read");
+        jp.add(b2);
+
+
+        b2.addActionListener ( new ActionListener () {
+            public void actionPerformed ( ActionEvent e) {
+                System.out.println("tasto read premuto!");
+                try {
+                    Path path = FileSystems.getDefault().getPath(PATH);
+                    List<String> result = java.nio.file.Files.readAllLines(path, StandardCharsets.UTF_8);
+                    for (String x : result) {
+                        System.out.println(x);
+                    }
+                   
+                } catch (Exception thtr) {
+                    // TODO: handle exception
+                }
+               
+            }
+             });
+
+
+       
     }
+
 
     private void display() {
         /*
@@ -91,8 +151,10 @@ public class BadIOGUI {
         /*
          * OK, ready to push the frame onscreen
          */
-        frame.setVisible(true);
+         frame.setVisible(true);
+         frame.pack();
     }
+
 
     /**
      * Launches the application.
