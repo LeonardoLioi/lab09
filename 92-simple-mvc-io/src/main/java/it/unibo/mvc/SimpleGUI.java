@@ -5,7 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
-
+import java.awt.event.*;
+import java.io.File;
 import java.awt.BorderLayout;
 
 /**
@@ -28,6 +29,18 @@ public final class SimpleGUI {
         
         jp.add(text, BorderLayout.CENTER);
         jp.add(b, BorderLayout.SOUTH);
+        b.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                Controller ctr = new Controller();
+                String content = text.getText();
+                ctr.writeContent(content);
+                System.out.println("The file was saved in: "+ctr.getFilePath());
+                
+            }
+
+        });
         
 	    frame.getContentPane().add(jp);
         frame.setVisible(true);
@@ -41,7 +54,7 @@ public final class SimpleGUI {
 
     public static void main(final String ...args){
 
-        new SimpleGUI().start();
+        new SimpleGUI();
 
     }
 

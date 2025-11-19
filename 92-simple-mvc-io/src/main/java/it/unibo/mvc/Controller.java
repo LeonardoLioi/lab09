@@ -32,7 +32,7 @@ public class Controller {
 
         try {
                 Files.writeString(Path.of(this.currentFile.getPath()), text);
-        } catch (Exception e) {
+        } catch (IOException e) {
             // TODO: handle exception
         }
 
