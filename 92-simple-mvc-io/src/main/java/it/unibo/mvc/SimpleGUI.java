@@ -47,11 +47,6 @@ public final class SimpleGUI {
 
     }
 
-    public void start(){
-        // new SimpleGUI();
-
-    }
-
     public static void main(final String ...args){
 
         new SimpleGUI();

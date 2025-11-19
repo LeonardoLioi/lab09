@@ -30,7 +30,7 @@ public final class SimpleGUIWithFileChooser {
         JPanel jp2 = new JPanel(new BorderLayout());
         JTextField field = new JTextField();
         field.setEditable(false);
-        JButton b3 = new JButton("Browse");
+        JButton b3 = new JButton("Browse...");
         jp2.add(field, BorderLayout.CENTER);
         jp2.add(b3, BorderLayout.LINE_END);
         b3.addActionListener(new ActionListener(){
@@ -39,8 +39,18 @@ public final class SimpleGUIWithFileChooser {
             public void actionPerformed(ActionEvent arg0) {
                 JFileChooser chooser = new JFileChooser();
                 chooser.setSize(300,300);
-                chooser.showSaveDialog(new JFileChooser());
-                
+                int returnVal = chooser.showSaveDialog(new JFileChooser());
+                if(returnVal == JFileChooser.APPROVE_OPTION){
+                    Controller ctr = new Controller();
+                    ctr.setFile(chooser.getSelectedFile());
+                    field.setText(chooser.getSelectedFile().getAbsolutePath());
+                }
+                else if(returnVal == JFileChooser.CANCEL_OPTION){
+
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "An error has occured", "error", JOptionPane.ERROR_MESSAGE);
+                }
                 chooser.setVisible(true);
                 
             }
