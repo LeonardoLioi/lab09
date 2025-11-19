@@ -33,7 +33,7 @@ public class Controller {
         try {
                 Files.writeString(Path.of(this.currentFile.getPath()), text);
         } catch (IOException e) {
-            // TODO: handle exception
+                throw new RuntimeException("Errore scrivendo il file", e);
         }
 
     }

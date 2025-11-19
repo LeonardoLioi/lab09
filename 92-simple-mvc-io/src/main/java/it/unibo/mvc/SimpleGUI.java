@@ -4,9 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.border.Border;
 import java.awt.event.*;
-import java.io.File;
 import java.awt.BorderLayout;
 
 /**
